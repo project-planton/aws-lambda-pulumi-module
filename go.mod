@@ -9,7 +9,7 @@ replace github.com/plantoncloud/pulumi-module-golang-commons => ../../plantonclo
 require (
 	github.com/pkg/errors v0.9.1
 	github.com/plantoncloud/planton-cloud-apis v0.1.43
-	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240905105923-c9458da08f51
+	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240913203553-f4420f61790e
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.42.1
 	github.com/pulumi/pulumi/sdk/v3 v3.127.0
 )
