@@ -1,6 +1,8 @@
 package pkg
 
 import (
+	"fmt"
+	"github.com/bufbuild/protovalidate-go"
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/aws/awslambda"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
@@ -8,10 +10,23 @@ import (
 )
 
 func Resources(ctx *pulumi.Context, stackInput *awslambda.AwsLambdaStackInput) error {
+	v, err := protovalidate.New(
+		protovalidate.WithDisableLazy(true),
+		protovalidate.WithMessages(stackInput.Target.Spec),
+	)
+	if err != nil {
+		fmt.Println("failed to initialize validator:", err)
+	}
+
+	if err = v.Validate(stackInput.Target.Spec); err != nil {
+		return errors.Errorf("%s", err)
+	}
+
+	locals := initializeLocals(ctx, stackInput)
 	awsCredential := stackInput.AwsCredential
 
 	//create aws provider using the credentials from the input
-	_, err := aws.NewProvider(ctx,
+	awsProvider, err := aws.NewProvider(ctx,
 		"classic-provider",
 		&aws.ProviderArgs{
 			AccessKey: pulumi.String(awsCredential.AccessKeyId),
@@ -21,6 +36,32 @@ func Resources(ctx *pulumi.Context, stackInput *awslambda.AwsLambdaStackInput) e
 	if err != nil {
 		return errors.Wrap(err, "failed to create aws provider")
 	}
+
+	createdIamRole, err := iamRole(ctx, locals, awsProvider)
+	if err != nil {
+		return errors.Wrap(err, "failed to create iam role")
+	}
+
+	if stackInput.Target.Spec.CloudwatchLogGroup != nil {
+		_, err := cloudwatchLogGroup(ctx, locals, awsProvider)
+		if err != nil {
+			return errors.Wrap(err, "failed to create cloud watch log group")
+		}
+	}
+
+	createdLambdaFunction, err := lambdaFunction(ctx, locals, awsProvider, createdIamRole)
+	if err != nil {
+		return errors.Wrap(err, "failed to create lambda function")
+	}
+
+	err = invokeFunctionPermissions(ctx, locals, awsProvider, createdLambdaFunction)
+	if err != nil {
+		return errors.Wrap(err, "failed to create invoke function permissions")
+	}
+
+	ctx.Export("lambda-function-arn", createdLambdaFunction.Arn)
+	ctx.Export("lambda-function-name", createdLambdaFunction.Name)
+	ctx.Export("iam-role-name", createdIamRole.Name)
 
 	return nil
 }
