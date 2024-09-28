@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	"github.com/plantoncloud/planton/apis/zzgo/cloud/planton/apis/code2cloud/v1/aws/awslambda"
+	"github.com/plantoncloud/project-planton/apis/zzgo/cloud/planton/apis/code2cloud/v1/aws/awslambda"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

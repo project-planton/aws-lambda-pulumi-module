@@ -2,14 +2,14 @@ module github.com/plantoncloud/aws-lambda-pulumi-module
 
 go 1.23.0
 
-//replace github.com/plantoncloud/planton => ../../plantoncloud/planton
+//replace github.com/plantoncloud/project-planton => ../../plantoncloud/project-planton
 
 //replace github.com/plantoncloud/pulumi-module-golang-commons => ../../plantoncloud/pulumi-module-golang-commons
 
 require (
 	github.com/pkg/errors v0.9.1
-	github.com/plantoncloud/planton/apis v0.0.0-20240925061921-2b66f63d1ca3
-	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240925062653-7fc95f73d10a
+	github.com/plantoncloud/project-planton/apis v0.0.0-20240928044211-9168d6c7a46b
+	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240928073143-7b29b143661c
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.42.1
 	github.com/pulumi/pulumi/sdk/v3 v3.129.0
 )
