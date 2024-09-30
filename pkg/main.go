@@ -1,13 +1,13 @@
 package pkg
 
 import (
+	awslambdav1 "buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/apis/provider/aws/awslambda/v1"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/project-planton/apis/zzgo/cloud/planton/apis/code2cloud/v1/aws/awslambda"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func Resources(ctx *pulumi.Context, stackInput *awslambda.AwsLambdaStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *awslambdav1.AwsLambdaStackInput) error {
 	locals := initializeLocals(ctx, stackInput)
 	awsCredential := stackInput.AwsCredential
 
