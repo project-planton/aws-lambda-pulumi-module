@@ -1,8 +1,8 @@
 package pkg
 
 import (
-	awslambdav1 "buf.build/gen/go/project-planton/apis/protocolbuffers/go/project/planton/provider/aws/awslambda/v1"
 	"github.com/pkg/errors"
+	awslambdav1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/aws/awslambda/v1"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
